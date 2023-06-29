@@ -13,10 +13,11 @@ struct Particle {
 };
 
 int main() {
-    constexpr int windowWidth = 1024;
-    constexpr int windowHeight = 760;
+    constexpr int windowWidth = 1600;
+    constexpr int windowHeight = 900;
 
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Firworks Simulation");
+    window.setFramerateLimit(60);
 
     std::vector<Particle> particles;
 
@@ -52,8 +53,8 @@ int main() {
 
         // Update and draw particles
         for(auto it = particles.begin(); it != particles.end();) {
-            it->position += it->velocity * 0.0005f;
-            it->velocity.y += 50.0f * 0.001f; // Apply gravity
+            it->position += it->velocity * 0.01f;
+            it->velocity.y += 50.0f * 0.01f; // Apply gravity
             
             sf::CircleShape shape(PARTICLE_SIZE);
             shape.setPosition(it->position);
