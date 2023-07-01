@@ -1,7 +1,5 @@
 #pragma once
 
-#define PARTICLE_SIZE 1.2f
+#define PARTICLE_SIZE 1.5f
 
-#define MAX_RADIUS 150.0f
-
-#define PARTICLE_MULTIPLIER 30
+#define PARTICLE_MULTIPLIER 70
