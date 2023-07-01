@@ -9,8 +9,6 @@ struct Particle {
     sf::Vector2f velocity;
     sf::Color color;
     float radius;
-    float lifespan;
-    bool mustDelete;
 };
 
 int main() {
@@ -26,7 +24,7 @@ int main() {
     std::mt19937 gen(rd());
     std::uniform_real_distribution<float> velDist(100.0f, 300.0f);
     std::uniform_real_distribution<float> angleDist(0.0f, 2 * 3.141592f);
-    std::uniform_real_distribution<float> radiusDis(50.0f, 150.0f);
+    std::uniform_real_distribution<float> radiusDist(50.0f, 150.0f);
     std::uniform_int_distribution<int> colorDist(0, 255);
 
     while(window.isOpen()) {
@@ -43,11 +41,10 @@ int main() {
                 Particle particle;
                 particle.originalPos = sf::Vector2f(sf::Mouse::getPosition(window));
                 particle.position = particle.originalPos;
-                particle.velocity = sf::Vector2f(velDist(gen) * std::cos(angleDist(gen)), velDist(gen) * std::sin(angleDist(gen)));
+                particle.velocity = sf::Vector2f(velDist(gen) * std::cos(angleDist(gen)),
+                        velDist(gen) * std::sin(angleDist(gen)));
                 particle.color = sf::Color(colorDist(gen), colorDist(gen), colorDist(gen));
-                particle.lifespan = 10.0f;
-                particle.mustDelete = false;
-                particle.radius = radiusDis(gen);
+                particle.radius = radiusDist(gen);
 
                 particles.push_back(particle);
             }
@@ -63,12 +60,9 @@ int main() {
             shape.setFillColor(it->color);
             window.draw(shape);
 
-            it->lifespan -= 0.01f;
-            float dist = std::sqrt(std::pow(it->originalPos.x - it->position.x, 2) + std::pow(it->originalPos.y - it->position.y, 2));
-            if(dist >= it->radius) {
-                it->mustDelete = true;
-            }
-            if(it->lifespan <= 0 || it->mustDelete)
+            float dist = std::sqrt(std::pow(it->originalPos.x - it->position.x, 2) +
+                    std::pow(it->originalPos.y - it->position.y, 2));
+            if(dist >= it->radius)
                 it = particles.erase(it);
             else
                 ++it;
